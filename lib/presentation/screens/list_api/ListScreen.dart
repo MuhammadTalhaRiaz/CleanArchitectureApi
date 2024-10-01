@@ -5,6 +5,8 @@ import 'package:api_clean_structure/presentation/screens/list_api/list_view_mode
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../product_details/product_details.dart';
+
 class ProductListScreen extends StatefulWidget {
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
@@ -36,13 +38,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
               itemCount: state.products.length,
               itemBuilder: (context, index) {
                 final product = state.products[index];
-
-                // Use null-aware access for data
                 final productPrice = product.data?.price ?? 'No price available'; // Default value if price is null
 
-                return ListTile(
-                  title: Text(product.name),
-                  subtitle: Text(productPrice.toString()),
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(productId: state.products[index].id)));
+                  },
+                  child: ListTile(
+                    title: Text(product.name),
+                    subtitle: Text(productPrice.toString()),
+                  ),
                 );
               },
             );

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:api_clean_structure/data/dto/ListDto.dart';
 import 'package:api_clean_structure/data/dto/LoginDto.dart';
+import 'package:api_clean_structure/data/dto/product_details_dto.dart';
 import 'package:api_clean_structure/data/requests/LoginRequestData.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,4 +67,20 @@ class ApiService {
       throw Exception('An unexpected error occurred: ${e.toString()}');
     }
   }
+
+  Future<ProductDetailsDto> fetchItemDetails(String id) async {
+    try {
+      final response = await http.get(Uri.parse('https://api.restful-api.dev/objects/$id'));
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        return ProductDetailsDto.fromJson(jsonResponse);
+      } else {
+        throw Exception('Failed to load item details, Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Failed to fetch item details: $error');
+    }
+  }
+
 }
