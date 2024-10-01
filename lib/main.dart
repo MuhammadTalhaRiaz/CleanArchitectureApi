@@ -27,27 +27,24 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider(create: (_) => ApiService()),
 
-        // Pass the ApiService instance to LoginRepositoryImpl
+        //Login
         Provider<LoginRepository>(
           create: (context) => LoginRepositoryImpl(context.read<ApiService>()),
         ),
+        Provider(
+            create: (context) => LoginUseCase(context.read<LoginRepository>())),
+        BlocProvider(
+            create: (context) => LoginCubit(context.read<LoginUseCase>())),
 
-        // Pass the LoginUseCase with the repository
-        Provider(create: (context) => LoginUseCase(context.read<LoginRepository>())),
-
-        // Pass the LoginCubit with the use case
-        BlocProvider(create: (context) => LoginCubit(context.read<LoginUseCase>())),
-
+        //List
         Provider<ListRepository>(
           create: (context) => ListRepositoryImpl(context.read<ApiService>()),
         ),
-
-        // Pass the LoginUseCase with the repository
-        Provider(create: (context) => ListUsecase(context.read<ListRepository>())),
-
-        // Pass the LoginCubit with the use case
-        BlocProvider(create: (context) => ListCubit(context.read<ListRepository>())), // Make sure to use ListRepository
-
+        Provider(
+            create: (context) => ListUsecase(context.read<ListRepository>())),
+        BlocProvider(
+            create: (context) => ListCubit(context
+                .read<ListRepository>())), // Make sure to use ListRepository
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -56,4 +53,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
